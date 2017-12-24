@@ -47,7 +47,9 @@
                   url: url
               };
           var linkRenderer = function (row, datafield, value) {
-              return '<a style="margin: auto;" target="_blank" href="https://www.zulutrade.com/trader/' + value + '"><img style="height: 30px;" src="https://www.zulutrade.com/webservices/Image.ashx?type=user&size=XL&ignore=false&id=' + value + '"/></a>';
+              return '<a style="margin: auto;" target="_blank" href="https://www.zulutrade.com/trader/' + value + '">' +
+                  '<img style="height: 30px;" src="https://www.zulutrade.com/webservices/Image.ashx?type=user&size=XL&ignore=false&id=' + value + '"/>' +
+                  '</a>';
           }
           var typeRenderer = function (row, datafield, value) {
               if (value == 'SELL') {
@@ -55,12 +57,20 @@
               } else {
                   value = '<span style="color: blue;">' + value + '</span>';
               }
-              return value;
+              return '<div style="text-align: center; margin-top: 5px;">' + value + '</div>';
+          }
+          var floatingRenderer = function (row, datafield, value) {
+              if (value < 0) {
+                  value = '<span style="color: red;">' + value + '</span>';
+              } else {
+                  value = '<span style="color: blue;">' + value + '</span>';
+              }
+              return '<div style="text-align: center; margin-top: 5px;">' + value + '</div>';
           }
           var dataAdapter = new $.jqx.dataAdapter(source);
           $("#grid").jqxGrid(
               {
-                  width: 1030,
+                  width: 1029,
                   height: 550,
                   autoheight: false,
                   source: dataAdapter,
@@ -72,20 +82,48 @@
                   showfilterrow: true,
                   pagesize: 15,
                   autorowheight: true,
-                  selectionmode: 'singlerow',
+                  selectionmode: 'multiplerows',
                   columns: [
-                      {text: '#', datafield: 'rank', width: 30},
-                      {text: '#', datafield: 'traderId', key: true, cellsrenderer: linkRenderer, width: 30},
-                      {text: 'Trader', datafield: 'trader', width: 220},
-                      {text: 'Currency', datafield: 'currency', width: 100},
-                      {text: 'Type', datafield: 'tradeType', cellsrenderer: typeRenderer, width: 50},
-                      {text: 'Lot', datafield: 'stdLotds', width: 50},
-                      {text: 'Date Open', datafield: 'dateTime', width: 250},
-                      {text: 'Open', datafield: 'entryRate', width: 100},
-                      {text: 'Current', datafield: 'currentPrice', width: 100},
-                      {text: 'Profit (pips)', datafield: 'floatingPips', width: 100}
+                      {text: '#', datafield: 'rank', cellsalign: 'center', align: 'center', width: 30},
+                      {
+                          text: '#',
+                          datafield: 'traderId',
+                          key: true,
+                          cellsrenderer: linkRenderer,
+                          cellsalign: 'center',
+                          align: 'center',
+                          width: 29
+                      },
+                      {text: 'Trader', datafield: 'trader', cellsalign: 'center', align: 'center', width: 220},
+                      {text: 'Currency', datafield: 'currency', cellsalign: 'center', align: 'center', width: 100},
+                      {
+                          text: 'Type',
+                          datafield: 'tradeType',
+                          cellsrenderer: typeRenderer,
+                          cellsalign: 'center',
+                          align: 'center',
+                          width: 50
+                      },
+                      {text: 'Lot', datafield: 'stdLotds', cellsalign: 'center', align: 'center', width: 50},
+                      {text: 'Date Open', datafield: 'dateTime', cellsalign: 'center', align: 'center', width: 250},
+                      {text: 'Open', datafield: 'entryRate', cellsalign: 'center', align: 'center', width: 100},
+                      {text: 'Current', datafield: 'currentPrice', cellsalign: 'center', align: 'center', width: 100},
+                      {
+                          text: 'Profit (pips)',
+                          datafield: 'floatingPips',
+                          cellsrenderer: floatingRenderer,
+                          cellsalign: 'center',
+                          align: 'center',
+                          width: 100
+                      }
                   ]
               });
+          $("#grid").on('rowselect', function (event) {
+              console.log(event.args.row);
+          });
+          $("#grid").on('rowunselect', function (event) {
+              console.log(event.args.row);
+          });
           var UpdateData = setInterval(function () {
               $("#grid").jqxGrid('updatebounddata', 'cells');
           }, 10000);

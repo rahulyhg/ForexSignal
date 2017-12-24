@@ -134,4 +134,3 @@ getDataFromId();
 getCurrentPrice();
 getFloatingPips();
 allIn1JSON();
-done();
