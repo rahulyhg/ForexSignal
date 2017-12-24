@@ -1,4 +1,12 @@
 <?php
+function isRunning()
+{
+  $isRunning = file_get_contents('data/isRunning.txt');
+  if ($isRunning) {
+    exit('Running');
+  }
+  file_put_contents('data/isRunning.txt', true);
+}
 
 function getTop20Id()
 {
@@ -114,8 +122,16 @@ function allIn1JSON()
   file_put_contents('data/4_AllIn1JSON.txt', json_encode($returnArray));
 }
 
+function done()
+{
+  file_put_contents('data/isRunning.txt', false);
+  exit('Done');
+}
+
+isRunning();
 getTop20Id();
 getDataFromId();
 getCurrentPrice();
 getFloatingPips();
 allIn1JSON();
+done();
