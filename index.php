@@ -1,3 +1,7 @@
+<?php
+session_start();
+if (!$_SESSION['isLogin']) exit;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +52,7 @@
               };
           var linkRenderer = function (row, datafield, value) {
               return '<a style="margin: auto;" target="_blank" href="https://www.zulutrade.com/trader/' + value + '">' +
-                  '<img style="height: 30px;" src="https://www.zulutrade.com/webservices/Image.ashx?type=user&size=XL&ignore=false&id=' + value + '"/>' +
+                  '<img style="height: 30px;" src="https://www.zulutrade.com/webservices/Image.ashx?type=user&id=' + value + '"/>' +
                   '</a>';
           }
           var typeRenderer = function (row, datafield, value) {
