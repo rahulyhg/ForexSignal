@@ -46,7 +46,7 @@
               url: url
           };
           var linkRenderer = function (row, datafield, value) {
-              return '<a style="margin: auto;" target="_blank" href="http://www.zulutrade.com/trader/' + value + '"><img style="height: 30px;" src="http://www.zulutrade.com/webservices/Image.ashx?type=user&size=XL&ignore=false&id=' + value + '"/></a>';
+              return '<a style="margin: auto;" target="_blank" href="https://www.zulutrade.com/trader/' + value + '"><img style="height: 30px;" src="https://www.zulutrade.com/webservices/Image.ashx?type=user&size=XL&ignore=false&id=' + value + '"/></a>';
             }
           var typeRenderer = function (row, datafield, value) {
             if (value == 'SELL') {
