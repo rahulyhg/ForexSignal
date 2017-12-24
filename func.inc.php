@@ -26,16 +26,16 @@ function getDataFromId()
     $top20Data = $top20Obj['data'];
     if (!$top20Obj['data']) continue;
     foreach ($top20Data as $data) {
-			$day = 7;
-    	if (((time() * 1000) - $data->dateTime) > ($day * 24 * 60 * 60 * 1000)) continue;
-    	if (!$data->performanceValid) continue;
+      $day = 7;
+      if (((time() * 1000) - $data->dateTime) > ($day * 24 * 60 * 60 * 1000)) continue;
+      if (!$data->performanceValid) continue;
       @$tmp['currency'] = str_replace('/', '', $data->currencyName);
       @$tmp['dateTime'] = date('Y-m-d H:i:s', ($data->dateTime / 1000));
       @$tmp['stdLotds'] = $data->stdLotds;
       @$tmp['tradeType'] = $data->tradeType;
       @$tmp['entryRate'] = $data->entryRate;
       @$tmp['pipMultiplier'] = $data->pipMultiplier;
-      $returnArray[$id['name'] . '/' . $id['id']][] = $tmp;
+      $returnArray['#' . $index . '/' . $id['name'] . '/' . $id['id']][] = $tmp;
     }
   }
 
@@ -74,23 +74,23 @@ function getFloatingPips()
 {
   $top20Data = json_decode(file_get_contents('data/1_Top20Data.txt'), true);
   $currentPriceArray = json_decode(file_get_contents('data/2_CurrentPrice.txt'), true);
-	$returnArray = [];
-	foreach ($top20Data as $trader => $tradeArray) {
-		foreach ($tradeArray as $i => $trade) {
-			$currentPrice = $currentPriceArray[$trade['currency']]['price'];
-			if ($trade['tradeType'] == 'BUY') {
-				$floatingPips = $currentPrice - $trade['entryRate'];
-			} elseif ($trade['tradeType'] == 'SELL') {
-				$floatingPips = $trade['entryRate'] - $currentPrice;
-			}
-			$floatingPips = $floatingPips * $trade['pipMultiplier'];
-			$digits = ($trade['pipMultiplier'] > 1000) ? 5 : 3;
-			$trade['entryRate'] = number_format($trade['entryRate'], $digits);
-			$trade['currentPrice'] = number_format($currentPrice, $digits);
-			$trade['floatingPips'] = (float) number_format($floatingPips, 2);
-			$returnArray[$trader][$i] = $trade;
-		}
-	}
+  $returnArray = [];
+  foreach ($top20Data as $trader => $tradeArray) {
+    foreach ($tradeArray as $i => $trade) {
+      $currentPrice = $currentPriceArray[$trade['currency']]['price'];
+      if ($trade['tradeType'] == 'BUY') {
+        $floatingPips = $currentPrice - $trade['entryRate'];
+      } elseif ($trade['tradeType'] == 'SELL') {
+        $floatingPips = $trade['entryRate'] - $currentPrice;
+      }
+      $floatingPips = $floatingPips * $trade['pipMultiplier'];
+      $digits = ($trade['pipMultiplier'] > 1000) ? 5 : 3;
+      $trade['entryRate'] = number_format($trade['entryRate'], $digits);
+      $trade['currentPrice'] = number_format($currentPrice, $digits);
+      $trade['floatingPips'] = (float)number_format($floatingPips, 2);
+      $returnArray[$trader][$i] = $trade;
+    }
+  }
 
   file_put_contents('data/3_Top20FloatingPips.txt', json_encode($returnArray));
 }
@@ -98,17 +98,20 @@ function getFloatingPips()
 function allIn1JSON()
 {
   $top20FloatingPips = json_decode(file_get_contents('data/3_Top20FloatingPips.txt'), true);
-	$returnArray = [];
-	foreach ($top20FloatingPips as $trader => $tradeArray) {
-		foreach ($tradeArray as $i => $trade) {
-			$trade['trader'] = explode('/', $trader)[0];
-			$trade['traderId'] = explode('/', $trader)[1];
-			$returnArray[] = $trade;
-		}
-	}
+  $returnArray = [];
+  foreach ($top20FloatingPips as $trader => $tradeArray) {
+    foreach ($tradeArray as $i => $trade) {
+      $tmp = explode('/', $trader);
+      $trade['rank'] = $tmp[0];
+      $trade['trader'] = $tmp[1];
+      $trade['traderId'] = $tmp[2];
+      $returnArray[] = $trade;
+    }
+  }
 
   file_put_contents('data/4_AllIn1JSON.txt', json_encode($returnArray));
 }
+
 getTop20Id();
 getDataFromId();
 getCurrentPrice();
