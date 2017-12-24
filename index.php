@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!$_SESSION['isLogin']) exit;
+if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +52,8 @@ if (!$_SESSION['isLogin']) exit;
                   url: url
               };
           var linkRenderer = function (row, datafield, value) {
-              return '<a style="margin: auto;" target="_blank" href="https://www.zulutrade.com/trader/' + value + '">' +
+              var traderId = this.owner.source.records[row]['traderId'];
+              return '<a style="margin: auto;" target="_blank" href="https://www.zulutrade.com/trader/' + traderId + '">' +
                   '<img style="height: 30px;" src="https://www.zulutrade.com/webservices/Image.ashx?type=user&id=' + value + '"/>' +
                   '</a>';
           }
