@@ -41,7 +41,7 @@
                       {name: 'floatingPips', type: 'double'},
                       {name: 'trader', type: 'string'},
                       {name: 'traderId', type: 'string'},
-                      {name: 'rank', type: 'string'}
+                      {name: 'rank', type: 'int'}
                   ],
                   id: 'id',
                   url: url
@@ -60,7 +60,7 @@
           var dataAdapter = new $.jqx.dataAdapter(source);
           $("#grid").jqxGrid(
               {
-                  width: 1050,
+                  width: 1030,
                   height: 550,
                   autoheight: false,
                   source: dataAdapter,
@@ -74,7 +74,7 @@
                   autorowheight: true,
                   selectionmode: 'singlerow',
                   columns: [
-                      {text: 'Rank', datafield: 'rank', width: 50},
+                      {text: '#', datafield: 'rank', width: 30},
                       {text: '#', datafield: 'traderId', key: true, cellsrenderer: linkRenderer, width: 30},
                       {text: 'Trader', datafield: 'trader', width: 220},
                       {text: 'Currency', datafield: 'currency', width: 100},

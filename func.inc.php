@@ -99,10 +99,12 @@ function allIn1JSON()
 {
   $top20FloatingPips = json_decode(file_get_contents('data/3_Top20FloatingPips.txt'), true);
   $returnArray = [];
+  $i = 0;
   foreach ($top20FloatingPips as $trader => $tradeArray) {
-    foreach ($tradeArray as $i => $trade) {
+    $i++;
+    foreach ($tradeArray as $trade) {
       $tmp = explode('/', $trader);
-      $trade['rank'] = key($top20FloatingPips);
+      $trade['rank'] = $i;
       $trade['trader'] = $tmp[0];
       $trade['traderId'] = $tmp[1];
       $returnArray[] = $trade;
