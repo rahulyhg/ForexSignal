@@ -60,7 +60,7 @@
           var dataAdapter = new $.jqx.dataAdapter(source);
           $("#grid").jqxGrid(
               {
-                  width: 1020,
+                  width: 1050,
                   height: 550,
                   autoheight: false,
                   source: dataAdapter,
@@ -74,7 +74,7 @@
                   autorowheight: true,
                   selectionmode: 'singlerow',
                   columns: [
-                      {text: 'Rank', datafield: 'rank', width: 20},
+                      {text: 'Rank', datafield: 'rank', width: 50},
                       {text: '#', datafield: 'traderId', key: true, cellsrenderer: linkRenderer, width: 30},
                       {text: 'Trader', datafield: 'trader', width: 220},
                       {text: 'Currency', datafield: 'currency', width: 100},

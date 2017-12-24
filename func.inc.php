@@ -35,7 +35,7 @@ function getDataFromId()
       @$tmp['tradeType'] = $data->tradeType;
       @$tmp['entryRate'] = $data->entryRate;
       @$tmp['pipMultiplier'] = $data->pipMultiplier;
-      $returnArray['#' . $index . '/' . $id['name'] . '/' . $id['id']][] = $tmp;
+      $returnArray[$id['name'] . '/' . $id['id']][] = $tmp;
     }
   }
 
@@ -102,9 +102,9 @@ function allIn1JSON()
   foreach ($top20FloatingPips as $trader => $tradeArray) {
     foreach ($tradeArray as $i => $trade) {
       $tmp = explode('/', $trader);
-      $trade['rank'] = $tmp[0];
-      $trade['trader'] = $tmp[1];
-      $trade['traderId'] = $tmp[2];
+      $trade['rank'] = key($top20FloatingPips);
+      $trade['trader'] = $tmp[0];
+      $trade['traderId'] = $tmp[1];
       $returnArray[] = $trade;
     }
   }
