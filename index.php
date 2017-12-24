@@ -93,7 +93,7 @@
       });
     </script>
   </head>
-  <body class='default' background="image/background.jpg">
+  <body class='default' background="image/background.jpg" style="topp: 100px">
     <div id="grid" style="margin: auto"></div>
   </body>
 </html>
