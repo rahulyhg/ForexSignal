@@ -18,6 +18,7 @@ function getTop20Id()
   foreach ($top20Data as $d) {
     $tmp['id'] = ($d->trader->providerId);
     $tmp['name'] = ($d->trader->profile->name);
+    $tmp['zuluAccountId'] = ($d->trader->profile->zuluAccountId);
     $top20IdArray[] = $tmp;
   }
 
@@ -43,7 +44,7 @@ function getDataFromId()
       @$tmp['tradeType'] = $data->tradeType;
       @$tmp['entryRate'] = $data->entryRate;
       @$tmp['pipMultiplier'] = $data->pipMultiplier;
-      $returnArray[$id['name'] . '/' . $id['id']][] = $tmp;
+      $returnArray[$id['name'] . '/' . $id['id'] . '/' . $id['zuluAccountId']][] = $tmp;
     }
   }
 
@@ -115,6 +116,7 @@ function allIn1JSON()
       $trade['rank'] = $i;
       $trade['trader'] = $tmp[0];
       $trade['traderId'] = $tmp[1];
+      $trade['zuluAccountId'] = $tmp[2];
       $returnArray[] = $trade;
     }
   }

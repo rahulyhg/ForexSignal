@@ -45,6 +45,7 @@ if (!$_SESSION['isLogin']) exit;
                       {name: 'floatingPips', type: 'double'},
                       {name: 'trader', type: 'string'},
                       {name: 'traderId', type: 'string'},
+                      {name: 'zuluAccountId', type: 'string'},
                       {name: 'rank', type: 'int'}
                   ],
                   id: 'id',
@@ -91,7 +92,7 @@ if (!$_SESSION['isLogin']) exit;
                       {text: '#', datafield: 'rank', cellsalign: 'center', align: 'center', width: 30},
                       {
                           text: '#',
-                          datafield: 'traderId',
+                          datafield: 'zuluAccountId',
                           key: true,
                           cellsrenderer: linkRenderer,
                           cellsalign: 'center',
