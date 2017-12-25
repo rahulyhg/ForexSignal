@@ -139,7 +139,7 @@ if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
       });
   </script>
 </head>
-<body class='default' background="image/background.jpg" style="padding-top: 100px">
+<body class='default' background="image/background.jpg">
 <div id="grid" style="margin: auto"></div>
 </body>
 </html>
