@@ -83,7 +83,7 @@ if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
                   sortable: true,
                   filterable: true,
                   columnsresize: true,
-                  pageable: true,
+                  pageable: false,
                   columnsreorder: true,
                   showfilterrow: true,
                   pagesize: 15,
