@@ -78,7 +78,7 @@ if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
               {
                   width: 1029,
                   height: 550,
-                  autoheight: false,
+                  autoheight: true,
                   source: dataAdapter,
                   sortable: true,
                   filterable: true,
