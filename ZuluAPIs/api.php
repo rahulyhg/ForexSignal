@@ -25,6 +25,31 @@ class ZuluAPIs
     echo($result);
   }
 
+  function openMarket($currencyName = "EUR/USD", $lots = 0.1, $buy = false, $requestedPrice = 1.12)
+  {
+    $dataArray = [
+      'currencyName' => $currencyName,
+      'lots' => $lots,
+      'buy' => $buy,
+      'requestedPrice' => $requestedPrice,
+      'uniqueId' => '1234567',
+    ];
+    $url = '/open/market';
+    $this->cURL($url, $dataArray);
+  }
+
+  function updateLimit($currencyName = "EUR/USD", $buy = false, $brokerTicket = "123543", $limitValue = 1.5)
+  {
+    $dataArray = [
+      'currencyName' => $currencyName,
+      'buy' => $buy,
+      'brokerTicket' => $brokerTicket,
+      'limitValue' => $limitValue
+    ];
+    $url = '/update/limit';
+    $this->cURL($url, $dataArray);
+  }
+
   function getOpen()
   {
     $url = 'getOpen';
@@ -66,3 +91,5 @@ $zuluApi = new ZuluAPIs();
 //$zuluApi->getProviderStatistics();
 //$zuluApi->getTradingConfiguration();
 //$zuluApi->getInstruments();
+$zuluApi->openMarket();
+$zuluApi->updateLimit();
