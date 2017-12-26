@@ -25,27 +25,14 @@ class ZuluAPIs
     echo($result);
   }
 
-  function openMarket($currencyName = "EUR/USD", $lots = 0.1, $buy = false, $requestedPrice = 1.12)
+  function openMarket($dataArray)
   {
-    $dataArray = [
-      'currencyName' => $currencyName,
-      'lots' => $lots,
-      'buy' => $buy,
-      'requestedPrice' => $requestedPrice,
-      'uniqueId' => '1234567',
-    ];
     $url = '/open/market';
     $this->cURL($url, $dataArray);
   }
 
-  function updateLimit($currencyName = "EUR/USD", $buy = false, $brokerTicket = "123543", $limitValue = 1.5)
+  function updateLimit($dataArray)
   {
-    $dataArray = [
-      'currencyName' => $currencyName,
-      'buy' => $buy,
-      'brokerTicket' => $brokerTicket,
-      'limitValue' => $limitValue
-    ];
     $url = '/update/limit';
     $this->cURL($url, $dataArray);
   }
@@ -56,12 +43,8 @@ class ZuluAPIs
     $this->cURL($url);
   }
 
-  function getHistory($startDate = '2015-03-29', $endDate = '2015-04-01')
+  function getHistory($dataArray)
   {
-    $dataArray = [
-      'startDate' => $startDate,
-      'endDate' => $endDate
-    ];
     $url = 'getHistory/';
     $this->cURL($url, $dataArray);
   }
@@ -86,10 +69,43 @@ class ZuluAPIs
 }
 
 $zuluApi = new ZuluAPIs();
-//$zuluApi->getOpen();
-//$zuluApi->getHistory();
-//$zuluApi->getProviderStatistics();
-//$zuluApi->getTradingConfiguration();
-//$zuluApi->getInstruments();
-$zuluApi->openMarket();
-$zuluApi->updateLimit();
+switch ($_REQUEST['action']) {
+  case 'getOpen':
+    $zuluApi->getOpen();
+    break;
+  case 'getHistory':
+    $dataArray = [
+      'startDate' => $startDate,
+      'endDate' => $endDate
+    ];
+    $zuluApi->getHistory();
+    break;
+  case 'getProviderStatistics':
+    $zuluApi->getProviderStatistics();
+    break;
+  case 'getTradingConfiguration':
+    $zuluApi->getTradingConfiguration();
+    break;
+  case 'openMarket':
+    $dataArray = [
+      'currencyName' => $_REQUEST['currencyName'],
+      'lots' => $_REQUEST['lots'],
+      'buy' => $_REQUEST['buy'],
+      'requestedPrice' => $_REQUEST['requestedPrice'],
+      'uniqueId' => $_REQUEST['uniqueId'],
+    ];
+    $zuluApi->openMarket($dataArray);
+    break;
+  case 'updateLimit':
+    $dataArray = [
+      'currencyName' => $_REQUEST['currencyName'],
+      'buy' => $_REQUEST['buy'],
+      'brokerTicket' => $_REQUEST['brokerTicket'],
+      'limitValue' => $_REQUEST['limitValue']
+    ];
+    $zuluApi->updateLimit();
+    break;
+  case 'getInstruments':
+    $zuluApi->getInstruments();
+    break;
+}
