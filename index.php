@@ -1,6 +1,10 @@
 <?php
 session_start();
 if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
+if (isset($_REQUEST['day'])) {
+  $_POST['day'] = $_REQUEST['day'];
+  header("Location: index.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -136,7 +140,11 @@ if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
               $("#ForexSignalGrid").jqxGrid('updatebounddata', 'cells');
           }, 10000);
           var CallApi = setInterval(function () {
-              $.ajax({url: "refreshJSON.php"});
+            <?php
+            $day = (isset($_REQUEST['day'])) ? $_REQUEST['day'] : 2;
+            $url = "refreshJSON.php?day=$day";
+            ?>
+              $.ajax({url: "<?=$url?>"});
           }, 20000);
 
           // Forex Tip
