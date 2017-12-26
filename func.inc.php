@@ -36,7 +36,7 @@ function getDataFromId()
     $top20Data = $top20Obj['data'];
     if (!$top20Obj['data']) continue;
     foreach ($top20Data as $data) {
-      $day = 7;
+      $day = (isset($_REQUEST['day'])) ? $_REQUEST['day'] : 2;
       if (((time() * 1000) - $data->dateTime) > ($day * 24 * 60 * 60 * 1000)) continue;
       if (!$data->performanceValid) continue;
       @$tmp['currency'] = str_replace('/', '', $data->currencyName);
@@ -125,16 +125,99 @@ function allIn1JSON()
   file_put_contents('data/4_AllIn1JSON.txt', json_encode($returnArray));
 }
 
+function formatDataByCurrency()
+{
+  $top20Data = json_decode(file_get_contents('data/1_Top20Data.txt'), true);
+  $returnArray = [];
+  foreach ($top20Data as $trader => $tradeData) {
+    foreach ($tradeData as $index => $data) {
+      $currency = str_replace('/', '', $data['currency']);
+      $tmp = [];
+      $tmp['stdLotds'] = $data['stdLotds'];
+      $tmp['entryRate'] = $data['entryRate'];
+      $tmp['pipMultiplier'] = $data['pipMultiplier'];
+      $returnArray[$currency][$data['tradeType']][] = $tmp;
+    }
+  }
+  file_put_contents('data/5_FormatDataByCurrency.txt', json_encode($returnArray));
+}
+
+function zipDataByCurrency()
+{
+  $formatDataByCurrency = json_decode(file_get_contents('data/5_FormatDataByCurrency.txt'), true);
+  $currentPrice = json_decode(file_get_contents('data/2_CurrentPrice.txt'), true);
+  $returnArray = [];
+  foreach ($formatDataByCurrency as $currency => $dataObj) {
+    foreach ($dataObj as $type => $data) {
+      $totalLotByType = 0;
+      $totalPriceByType = 0;
+      $pipMultiplier = 0;
+      foreach ($data as $order) {
+        $totalLotByType += $order['stdLotds'];
+        $totalPriceByType += ($order['stdLotds'] * $order['entryRate']);
+        $pipMultiplier = $order['pipMultiplier'];
+      }
+      // if ($totalLotByType < 1) continue;
+      $averagePrice = ($totalPriceByType / $totalLotByType);
+      $averagePrice = number_format($averagePrice, strlen($pipMultiplier));
+      $floatingPips = ($currentPrice[$currency]['price'] - $averagePrice) * $pipMultiplier;
+      $floatingPips = ($type == 'BUY') ? $floatingPips : $floatingPips * -1;
+      $floatingPips = (float)number_format($floatingPips, 2);
+      $tmp['currency'] = $currency;
+      $tmp['tradeType'] = $type;
+      $tmp['stdLotds'] = $totalLotByType;
+      $tmp['entryRate'] = (float)$averagePrice;
+      $tmp['currentPrice'] = $currentPrice[$currency]['price'];
+      $tmp['floatingPips'] = $floatingPips;
+      $returnArray[$currency][$type] = $tmp;
+    }
+  }
+
+  file_put_contents('data/6_ZipDataByCurrency.txt', json_encode($returnArray));
+}
+
+function getTip()
+{
+  $zipDataByCurrency = json_decode(file_get_contents('data/6_ZipDataByCurrency.txt'), true);
+  $tmp = [];
+  foreach ($zipDataByCurrency as $currency => $dataObj) {
+    foreach ($dataObj as $type => $data) {
+      if (!$tmp || ($tmp['floatingPips'] > $data['floatingPips'])) {
+        if ($data['stdLotds'] <= 1) continue;
+        $tmp['currency'] = $currency;
+        $tmp['tradeType'] = $type;
+        $tmp['stdLotds'] = $data['stdLotds'];
+        $tmp['entryRate'] = $data['entryRate'];
+        $tmp['currentPrice'] = $data['currentPrice'];
+        $tmp['floatingPips'] = $data['floatingPips'];
+      }
+    }
+  }
+  file_put_contents('data/7_GetTip.txt', json_encode($tmp));
+}
+
+function allIn1JSON2()
+{
+  $zipDataByCurrency = json_decode(file_get_contents('data/6_ZipDataByCurrency.txt'), true);
+  $returnArray = [];
+  foreach ($zipDataByCurrency as $currency => $dataObj) {
+    foreach ($dataObj as $type => $order) {
+      $tmp = [];
+      $tmp['currency'] = $currency;
+      $tmp['type'] = $type;
+      $tmp['stdLotds'] = $order['stdLotds'];
+      $tmp['entryRate'] = $order['entryRate'];
+      $tmp['currentPrice'] = $order['currentPrice'];
+      $tmp['floatingPips'] = $order['floatingPips'];
+      $returnArray[] = $tmp;
+    }
+  }
+
+  file_put_contents('data/8_AllIn1JSON2.txt', json_encode($returnArray));
+}
+
 function done()
 {
   file_put_contents('data/isRunning.txt', false);
   exit('Done');
 }
-
-isRunning();
-getTop20Id();
-getDataFromId();
-getCurrentPrice();
-getFloatingPips();
-allIn1JSON();
-done();

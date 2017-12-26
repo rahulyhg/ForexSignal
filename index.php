@@ -29,8 +29,8 @@ if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
   <script type="text/javascript" src="js/scripts/demos.js"></script>
   <script type="text/javascript">
       $(document).ready(function () {
+          // Forex Signal
           var url = "data/4_AllIn1JSON.txt";
-          // prepare the data
           var source =
               {
                   datatype: "json",
@@ -74,9 +74,9 @@ if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
               return '<div style="text-align: center; margin-top: 5px;">' + value + '</div>';
           }
           var dataAdapter = new $.jqx.dataAdapter(source);
-          $("#grid").jqxGrid(
+          $("#ForexSignalGrid").jqxGrid(
               {
-                  width: 1029,
+                  width: 909,
                   height: 550,
                   autoheight: true,
                   source: dataAdapter,
@@ -100,7 +100,7 @@ if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
                           align: 'center',
                           width: 29
                       },
-                      {text: 'Trader', datafield: 'trader', cellsalign: 'center', align: 'center', width: 220},
+                      {text: 'Trader', datafield: 'trader', cellsalign: 'center', align: 'center', width: 100},
                       {text: 'Currency', datafield: 'currency', cellsalign: 'center', align: 'center', width: 100},
                       {
                           text: 'Type',
@@ -124,22 +124,89 @@ if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
                       }
                   ]
               });
-          $("#grid").on('rowselect', function (event) {
+          $("#ForexSignalGrid").on('rowselect', function (event) {
               console.log(event.args.row);
           });
-          $("#grid").on('rowunselect', function (event) {
+          $("#ForexSignalGrid").on('rowunselect', function (event) {
               console.log(event.args.row);
           });
           var UpdateData = setInterval(function () {
-              $("#grid").jqxGrid('updatebounddata', 'cells');
+              $("#ForexSignalGrid").jqxGrid('updatebounddata', 'cells');
           }, 10000);
           var CallApi = setInterval(function () {
               $.ajax({url: "refreshJSON.php"});
           }, 20000);
+
+          // Forex Tip
+          var url2 = "data/8_AllIn1JSON2.txt";
+          var source2 =
+              {
+                  datatype: "json",
+                  datafields: [
+                      {name: 'currency', type: 'string'},
+                      {name: 'stdLotds', type: 'string'},
+                      {name: 'type', type: 'string'},
+                      {name: 'entryRate', type: 'string'},
+                      {name: 'currentPrice', type: 'string'},
+                      {name: 'floatingPips', type: 'double'}
+                  ],
+                  id: 'id',
+                  url: url2
+              };
+
+          var dataAdapter2 = new $.jqx.dataAdapter(source2);
+          $("#ForexTipGrid").jqxGrid(
+              {
+                  width: 500,
+                  height: 550,
+                  autoheight: true,
+                  source: dataAdapter2,
+                  sortable: true,
+                  filterable: true,
+                  columnsresize: true,
+                  pageable: false,
+                  columnsreorder: true,
+                  showfilterrow: true,
+                  pagesize: 15,
+                  autorowheight: true,
+                  selectionmode: 'multiplerows',
+                  columns: [
+                      {text: 'Currency', datafield: 'currency', cellsalign: 'center', align: 'center', width: 100},
+                      {
+                          text: 'Type',
+                          datafield: 'type',
+                          cellsrenderer: typeRenderer,
+                          cellsalign: 'center',
+                          align: 'center',
+                          width: 50
+                      },
+                      {text: 'Lot', datafield: 'stdLotds', cellsalign: 'center', align: 'center', width: 50},
+                      {text: 'Open', datafield: 'entryRate', cellsalign: 'center', align: 'center', width: 100},
+                      {text: 'Current', datafield: 'currentPrice', cellsalign: 'center', align: 'center', width: 100},
+                      {
+                          text: 'Profit (pips)',
+                          datafield: 'floatingPips',
+                          cellsrenderer: floatingRenderer,
+                          cellsalign: 'center',
+                          align: 'center',
+                          width: 100
+                      }
+                  ]
+              });
+          $("#ForexTipGrid").on('rowselect', function (event) {
+              console.log(event.args.row);
+          });
+          $("#ForexTipGrid").on('rowunselect', function (event) {
+              console.log(event.args.row);
+          });
+          var UpdateData2 = setInterval(function () {
+              $("#ForexTipGrid").jqxGrid('updatebounddata', 'cells');
+          }, 10000);
       });
   </script>
 </head>
 <body class='default' background="image/background.jpg">
-<div id="grid" style="margin: auto"></div>
+<div id="ForexTipGrid" style="margin: 20px; float: left;"></div>
+<div id="ForexSignalGrid" style="margin: 20px; float: left;"></div>
 </body>
 </html>
