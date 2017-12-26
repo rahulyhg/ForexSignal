@@ -69,6 +69,7 @@ class ZuluAPIs
 }
 
 $zuluApi = new ZuluAPIs();
+$openMarketResult = null;
 switch (@trim($_REQUEST['action'])) {
   case 'getOpen':
     $zuluApi->getOpen();
@@ -213,7 +214,7 @@ switch (@trim($_REQUEST['action'])) {
             </div>
             <div class="form-group">
               <input type="hidden" name="requestedPrice" value="1">
-              <input type="hidden" name="uniqueId" value="<?=random_int(1, 100000)?>">
+              <input type="hidden" name="uniqueId" value="<?=rand(1, 100000);?>">
               <input type="hidden" name="action" value="openMarket">
             </div>
             <button type="submit" class="btn btn-default">
