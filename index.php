@@ -49,6 +49,8 @@ if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
                       {name: 'rank', type: 'int'}
                   ],
                   id: 'id',
+                  sortcolumn: "dateTime",
+                  sortdirection: "desc",
                   url: url
               };
           var linkRenderer = function (row, datafield, value) {
@@ -100,7 +102,7 @@ if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
                           align: 'center',
                           width: 29
                       },
-                      {text: 'Trader', datafield: 'trader', cellsalign: 'center', align: 'center', width: 100},
+                      {text: 'Trader', datafield: 'trader', cellsalign: 'center', align: 'center', width: 150},
                       {text: 'Currency', datafield: 'currency', cellsalign: 'center', align: 'center', width: 100},
                       {
                           text: 'Type',
@@ -111,7 +113,7 @@ if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
                           width: 50
                       },
                       {text: 'Lot', datafield: 'stdLotds', cellsalign: 'center', align: 'center', width: 50},
-                      {text: 'Date Open', datafield: 'dateTime', cellsalign: 'center', align: 'center', width: 250},
+                      {text: 'Date Open', datafield: 'dateTime', cellsalign: 'center', align: 'center', width: 200},
                       {text: 'Open', datafield: 'entryRate', cellsalign: 'center', align: 'center', width: 100},
                       {text: 'Current', datafield: 'currentPrice', cellsalign: 'center', align: 'center', width: 100},
                       {
@@ -151,6 +153,8 @@ if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
                       {name: 'floatingPips', type: 'double'}
                   ],
                   id: 'id',
+                  sortcolumn: "floatingPips",
+                  sortdirection: "asc",
                   url: url2
               };
 
