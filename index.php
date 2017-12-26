@@ -134,7 +134,7 @@ if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
               $("#grid").jqxGrid('updatebounddata', 'cells');
           }, 10000);
           var CallApi = setInterval(function () {
-              $.ajax({url: "api.php"});
+              $.ajax({url: "refreshJSON.php"});
           }, 20000);
       });
   </script>
