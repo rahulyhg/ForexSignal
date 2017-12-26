@@ -1,9 +1,11 @@
 <?php
 session_start();
 if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
-if (isset($_REQUEST['day'])) {
-  $_POST['day'] = $_REQUEST['day'];
+if (isset($_GET['day'])) {
+  $_POST['day'] = $_GET['day'];
   header("Location: index.php");
+} else {
+  $_POST['day'] = null;
 }
 ?>
 <!DOCTYPE html>
@@ -141,7 +143,7 @@ if (isset($_REQUEST['day'])) {
           }, 10000);
           var CallApi = setInterval(function () {
             <?php
-            $day = (isset($_REQUEST['day'])) ? $_REQUEST['day'] : 2;
+            $day = (isset($_POST['day'])) ? $_POST['day'] : 2;
             $url = "refreshJSON.php?day=$day";
             ?>
               $.ajax({url: "<?=$url?>"});

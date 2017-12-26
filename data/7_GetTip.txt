@@ -1,1 +1,1 @@
-{"currency":"USDCAD","tradeType":"BUY","stdLotds":2,"entryRate":1.26999,"currentPrice":1.26861,"floatingPips":-13.8}
+{"currency":"USDCAD","tradeType":"BUY","stdLotds":2,"entryRate":1.26999,"currentPrice":1.26857,"floatingPips":-14.2}
