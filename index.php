@@ -24,6 +24,11 @@ if (isset($_GET['day'])) {
       OneSignal.push(function() {
           OneSignal.init({
               appId: "23e68763-a5e1-411a-8e79-1d4d09ad8b98",
+              autoRegister: true,
+              notifyButton: {
+                  enable: false
+              },
+              persistNotification: false
           });
       });
   </script>
