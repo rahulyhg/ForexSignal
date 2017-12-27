@@ -221,30 +221,48 @@ if (isset($_GET['day'])) {
           $("#submit").addClass('btn-danger');
           $("#submit").removeClass('btn-success');
         }
-        $("#submit").off("click").on("click", function () {
-          var data = $("form").serializeArray();
-          var url = "ForexSignal.php";
-          $("[name=addSignal]").val('');
-          $.ajax({
-            method: 'POST',
-            url: url,
-            data: data,
-            success: function (response) {
-              var result = "NO SIGNAL!!!";
-              if (response) {
-                result = "Signal: " + response.replace(/,/g, '<br>');
-              }
-              $("#result").html(result);
-            },
-            error: function (response) {
-              $("#result").html("ERROR!!!");
+      });
+      $("#submit").off("click").on("click", function () {
+        var data = $("form").serializeArray();
+        var url = "ForexSignal.php";
+        $("[name=addSignal]").val('');
+        $.ajax({
+          method: 'POST',
+          url: url,
+          data: data,
+          success: function (response) {
+            var result = "NO SIGNAL!!!";
+            if (response) {
+              result = "Signal: " + response.replace(/,/g, '<br>');
             }
-          });
+            $("#result").html(result);
+          },
+          error: function (response) {
+            $("#result").html("ERROR!!!");
+          }
         });
       });
       var UpdateData2 = setInterval(function () {
         $("#ForexTipGrid").jqxGrid('updatebounddata', 'cells');
       }, 10000);
+      var UpdateData3 = setInterval(function () {
+        var getselectedrowindexes = $("#ForexTipGrid").jqxGrid('getselectedrowindexes');
+        var row = $("#ForexTipGrid").jqxGrid('getrowdata', getselectedrowindexes[0]);
+        if (row) {
+          $("[name=type]").val(row['type']);
+          $("[name=symbol]").val(row['currency']);
+          $("[name=price]").val(row['currentPrice']);
+          $("#submit").html(row['type']);
+          $("#submit").removeClass('btn-default');
+          if (row['type'] == 'BUY') {
+            $("#submit").addClass('btn-success');
+            $("#submit").removeClass('btn-danger');
+          } else {
+            $("#submit").addClass('btn-danger');
+            $("#submit").removeClass('btn-success');
+          }
+        }
+      }, 5000);
       var UpdateForexSignal = setInterval(function () {
         var url = "data/ForexSignal.txt";
         $.ajax({
