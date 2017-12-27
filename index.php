@@ -286,78 +286,13 @@ if (isset($_GET['day'])) {
         <label for="addSignal">Check</label>
         <input type="password" class="form-control" id="addSignal" name="addSignal">
       </div>
+      <input type="hidden" name="isDelete" value="false">
       <button type="submit" class="btn btn-default" id="submit" onclick="return false;">No Action</button>
       <p class="help-block" id="result"></p>
     </form>
   </div>
   <div id="ForexSignalGrid" style="margin: 20px; float: left;"></div>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="panel-group" id="panel-754590">
-        <div class="panel panel-default">
-          <div class="panel-heading" style="padding-left: 50%;">
-            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-754590"
-               href="#panel-element-985306">Major Chart</a>
-          </div>
-          <div id="panel-element-985306" class="panel-collapse collapse">
-            <div class="panel-body">
-              <div id="Chart0" style="margin: 20px; float: left;"></div>
-              <div id="Chart1" style="margin: 20px; float: left;"></div>
-              <div id="Chart2" style="margin: 20px; float: left;"></div>
-              <div id="Chart3" style="margin: 20px; float: left;"></div>
-              <div id="Chart4" style="margin: 20px; float: left;"></div>
-              <div id="Chart5" style="margin: 20px; float: left;"></div>
-              <div id="Chart6" style="margin: 20px; float: left;"></div>
-              <div id="Chart7" style="margin: 20px; float: left;"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-<script type="text/javascript" class="js-widget-demo-1">
-  var majorSymbol = [
-    "FX:EURUSD",
-    "FX:GBPUSD",
-    "FX:USDJPY",
-    "FX:USDCHF",
-    "FX:AUDUSD",
-    "FX:USDCAD",
-    "FX:EURGBP",
-    "FX:EURCAD"
-  ];
-
-  majorSymbol.forEach(function (symbol, i) {
-    var containerId = "Chart" + i;
-    newChart(symbol, containerId);
-  });
-
-  function newChart(symbol, containerId) {
-    new TradingView.widget({
-      "container_id": containerId,
-      "autosize": false,
-      "width": 680,
-      "height": 500,
-      "symbol": symbol,
-      "interval": "240",
-      "timezone": "Asia/Bangkok",
-      "theme": "Light",
-      "style": "8",
-      "locale": "en",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "hide_top_toolbar": true,
-      "save_image": false,
-      "hideideas": true,
-      "studies": [
-        "BB@tv-basicstudies",
-        "BollingerBandsWidth@tv-basicstudies"
-      ]
-    });
-  }
-</script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/scripts.js"></script>
 </body>

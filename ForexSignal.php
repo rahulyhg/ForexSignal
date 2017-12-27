@@ -1,6 +1,10 @@
 <?php
 date_default_timezone_set('asia/ho_chi_minh');
-file_put_contents('data/ForexSignal.txt', '');
+
+if (isset($_REQUEST['isDelete']) && $_REQUEST['isDelete']) {
+} else {
+  file_put_contents('data/ForexSignal.txt', '');
+}
 $addSignal = date('dH');
 if (isset($_REQUEST['addSignal']) && ($_REQUEST['addSignal'] == $addSignal)) {
   $newSignal[] = $_REQUEST['type'];
