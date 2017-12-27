@@ -15,6 +15,8 @@ if (isset($_GET['day'])) {
   <link rel="stylesheet" href="js/jqwidgets/styles/jqx.base.css" type="text/css"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
   <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1"/>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
   <script type="text/javascript" src="js/scripts/jquery-1.11.1.min.js"></script>
   <script type="text/javascript" src="js/jqwidgets/jqxcore.js"></script>
   <script type="text/javascript" src="js/jqwidgets/jqxbuttons.js"></script>
@@ -82,17 +84,17 @@ if (isset($_GET['day'])) {
       var dataAdapter = new $.jqx.dataAdapter(source);
       $("#ForexSignalGrid").jqxGrid(
         {
-          width: 909,
-          height: 550,
-          autoheight: true,
+          width: 750,
+          height: 420,
+          autoheight: false,
           source: dataAdapter,
           sortable: true,
           filterable: true,
           columnsresize: true,
-          pageable: false,
+          pageable: true,
           columnsreorder: true,
           showfilterrow: true,
-          pagesize: 15,
+          pagesize: 10,
           autorowheight: true,
           selectionmode: 'multiplerows',
           columns: [
@@ -106,7 +108,7 @@ if (isset($_GET['day'])) {
               align: 'center',
               width: 29
             },
-            {text: 'Trader', datafield: 'trader', cellsalign: 'center', align: 'center', width: 150},
+//            {text: 'Trader', datafield: 'trader', cellsalign: 'center', align: 'center', width: 150},
             {text: 'Currency', datafield: 'currency', cellsalign: 'center', align: 'center', width: 100},
             {
               text: 'Type',
@@ -170,18 +172,18 @@ if (isset($_GET['day'])) {
       $("#ForexTipGrid").jqxGrid(
         {
           width: 500,
-          height: 550,
-          autoheight: true,
+          height: 420,
+          autoheight: false,
           source: dataAdapter2,
           sortable: true,
           filterable: true,
           columnsresize: true,
-          pageable: false,
+          pageable: true,
           columnsreorder: true,
           showfilterrow: true,
-          pagesize: 15,
+          pagesize: 10,
           autorowheight: true,
-          selectionmode: 'multiplerows',
+          selectionmode: 'singlerow',
           columns: [
             {text: 'Currency', datafield: 'currency', cellsalign: 'center', align: 'center', width: 100},
             {
@@ -206,29 +208,114 @@ if (isset($_GET['day'])) {
           ]
         });
       $("#ForexTipGrid").on('rowselect', function (event) {
-        console.log(event.args.row);
-      });
-      $("#ForexTipGrid").on('rowunselect', function (event) {
-        console.log(event.args.row);
+        var row = event.args.row;
+        $("[name=type]").val(row['type']);
+        $("[name=symbol]").val(row['currency']);
+        $("[name=price]").val(row['currentPrice']);
+        $("#submit").html(row['type']);
+        $("#submit").removeClass('btn-default');
+        if (row['type'] == 'BUY') {
+          $("#submit").addClass('btn-success');
+          $("#submit").removeClass('btn-danger');
+        } else {
+          $("#submit").addClass('btn-danger');
+          $("#submit").removeClass('btn-success');
+        }
+        $("#submit").off("click").on("click", function () {
+          var data = $("form").serializeArray();
+          var url = "ForexSignal.php";
+          $("[name=addSignal]").val('');
+          $.ajax({
+            method: 'POST',
+            url: url,
+            data: data,
+            success: function (response) {
+              var result = "NO SIGNAL!!!";
+              if (response) {
+                result = "Signal: " + response.replace(/,/g, '<br>');
+              }
+              $("#result").html(result);
+            },
+            error: function (response) {
+              $("#result").html("ERROR!!!");
+            }
+          });
+        });
       });
       var UpdateData2 = setInterval(function () {
         $("#ForexTipGrid").jqxGrid('updatebounddata', 'cells');
       }, 10000);
+      var UpdateForexSignal = setInterval(function () {
+        var url = "data/ForexSignal.txt";
+        $.ajax({
+          method: 'GET',
+          url: url,
+          success: function (response) {
+            var result = "NO SIGNAL!!!";
+            if (response) {
+              result = "Signal: " + response.replace(/,/g, '<br>');
+            }
+            $("#result").html(result);
+          },
+          error: function (response) {
+            $("#result").html("ERROR!!!");
+          }
+        });
+      }, 3000);
     });
   </script>
 </head>
-<body class='default' background="image/background.jpg">
-<div id="ForexTipGrid" style="margin: 20px; float: left;"></div>
-<div id="ForexSignalGrid" style="margin: 20px; float: left;"></div>
-<div id="Chart0" style="margin: 20px; float: left;"></div>
-<div id="Chart1" style="margin: 20px; float: left;"></div>
-<div id="Chart2" style="margin: 20px; float: left;"></div>
-<div id="Chart3" style="margin: 20px; float: left;"></div>
-<div id="Chart4" style="margin: 20px; float: left;"></div>
-<div id="Chart5" style="margin: 20px; float: left;"></div>
-<div id="Chart6" style="margin: 20px; float: left;"></div>
-<div id="Chart7" style="margin: 20px; float: left;"></div>
-
+<body class='default'>
+<div style="max-width: 1475px">
+  <div id="ForexTipGrid" style="margin: 20px; float: left;"></div>
+  <div id="addSignalForm" style="margin: 20px; float: left; max-width: 100px">
+    <form>
+      <div class="form-group">
+        <label for="type">Type</label>
+        <input type="text" class="form-control" id="type" name="type" readonly>
+      </div>
+      <div class="form-group">
+        <label for="symbol">Symbol</label>
+        <input type="text" class="form-control" id="symbol" name="symbol" readonly>
+      </div>
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input type="text" class="form-control" id="price" name="price" readonly>
+      </div>
+      <div class="form-group">
+        <label for="addSignal">Check</label>
+        <input type="password" class="form-control" id="addSignal" name="addSignal">
+      </div>
+      <button type="submit" class="btn btn-default" id="submit" onclick="return false;">No Action</button>
+      <p class="help-block" id="result"></p>
+    </form>
+  </div>
+  <div id="ForexSignalGrid" style="margin: 20px; float: left;"></div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel-group" id="panel-754590">
+        <div class="panel panel-default">
+          <div class="panel-heading" style="padding-left: 50%;">
+            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-754590"
+               href="#panel-element-985306">Major Chart</a>
+          </div>
+          <div id="panel-element-985306" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div id="Chart0" style="margin: 20px; float: left;"></div>
+              <div id="Chart1" style="margin: 20px; float: left;"></div>
+              <div id="Chart2" style="margin: 20px; float: left;"></div>
+              <div id="Chart3" style="margin: 20px; float: left;"></div>
+              <div id="Chart4" style="margin: 20px; float: left;"></div>
+              <div id="Chart5" style="margin: 20px; float: left;"></div>
+              <div id="Chart6" style="margin: 20px; float: left;"></div>
+              <div id="Chart7" style="margin: 20px; float: left;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script type="text/javascript" class="js-widget-demo-1">
   var majorSymbol = [
@@ -251,7 +338,7 @@ if (isset($_GET['day'])) {
     new TradingView.widget({
       "container_id": containerId,
       "autosize": false,
-      "width": 705,
+      "width": 680,
       "height": 500,
       "symbol": symbol,
       "interval": "240",
@@ -271,5 +358,7 @@ if (isset($_GET['day'])) {
     });
   }
 </script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/scripts.js"></script>
 </body>
 </html>

@@ -165,7 +165,7 @@ function zipDataByCurrency()
       $floatingPips = (float)number_format($floatingPips, 2);
       $tmp['currency'] = $currency;
       $tmp['tradeType'] = $type;
-      $tmp['stdLotds'] = $totalLotByType;
+      $tmp['stdLotds'] = (float)number_format($totalLotByType, 2);
       $tmp['entryRate'] = (float)$averagePrice;
       $tmp['currentPrice'] = $currentPrice[$currency]['price'];
       $tmp['floatingPips'] = $floatingPips;
