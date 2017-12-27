@@ -220,5 +220,56 @@ if (isset($_GET['day'])) {
 <body class='default' background="image/background.jpg">
 <div id="ForexTipGrid" style="margin: 20px; float: left;"></div>
 <div id="ForexSignalGrid" style="margin: 20px; float: left;"></div>
+<div id="Chart0" style="margin: 20px; float: left;"></div>
+<div id="Chart1" style="margin: 20px; float: left;"></div>
+<div id="Chart2" style="margin: 20px; float: left;"></div>
+<div id="Chart3" style="margin: 20px; float: left;"></div>
+<div id="Chart4" style="margin: 20px; float: left;"></div>
+<div id="Chart5" style="margin: 20px; float: left;"></div>
+<div id="Chart6" style="margin: 20px; float: left;"></div>
+<div id="Chart7" style="margin: 20px; float: left;"></div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript" class="js-widget-demo-1">
+  var majorSymbol = [
+    "FX:EURUSD",
+    "FX:GBPUSD",
+    "FX:USDJPY",
+    "FX:USDCHF",
+    "FX:AUDUSD",
+    "FX:USDCAD",
+    "FX:EURGBP",
+    "FX:EURCAD"
+  ];
+
+  majorSymbol.forEach(function (symbol, i) {
+    var containerId = "Chart" + i;
+    newChart(symbol, containerId);
+  });
+
+  function newChart(symbol, containerId) {
+    new TradingView.widget({
+      "container_id": containerId,
+      "autosize": false,
+      "width": 705,
+      "height": 500,
+      "symbol": symbol,
+      "interval": "240",
+      "timezone": "Asia/Bangkok",
+      "theme": "Light",
+      "style": "8",
+      "locale": "en",
+      "toolbar_bg": "#f1f3f6",
+      "enable_publishing": false,
+      "hide_top_toolbar": true,
+      "save_image": false,
+      "hideideas": true,
+      "studies": [
+        "BB@tv-basicstudies",
+        "BollingerBandsWidth@tv-basicstudies"
+      ]
+    });
+  }
+</script>
 </body>
 </html>
