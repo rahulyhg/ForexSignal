@@ -17,6 +17,16 @@ if (isset($_GET['day'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1"/>
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/style.css" rel="stylesheet">
+  <link rel="manifest" href="/manifest.json" />
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+  <script>
+      var OneSignal = window.OneSignal || [];
+      OneSignal.push(function() {
+          OneSignal.init({
+              appId: "23e68763-a5e1-411a-8e79-1d4d09ad8b98",
+          });
+      });
+  </script>
   <script type="text/javascript" src="js/scripts/jquery-1.11.1.min.js"></script>
   <script type="text/javascript" src="js/jqwidgets/jqxcore.js"></script>
   <script type="text/javascript" src="js/jqwidgets/jqxbuttons.js"></script>
