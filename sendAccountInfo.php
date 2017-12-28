@@ -1,20 +1,15 @@
 <?PHP
-$directory = 'data/accountInfo';
+$accountInfo = json_decode(file_get_contents('data/AccountInfo.txt'), true);
 if (isset($_REQUEST['number'])) {
-  $number = $_REQUEST['number'];
-  $broker = $_REQUEST['broker'];
-  $name = $_REQUEST['name'];
-  $balance = $_REQUEST['balance'];
-  $profit = $_REQUEST['profit'];
-  $accountInfo = [
-    'broker' => $broker,
-    'number' => $number,
-    'name' => $name,
-    'balance' => $balance,
-    'profit' => $profit,
+  $newInfo = [
+    'broker' => $_REQUEST['broker'],
+    'number' => $_REQUEST['number'],
+    'name' => $_REQUEST['name'],
+    'balance' => $_REQUEST['balance'],
+    'profit' => $_REQUEST['profit']
   ];
-  file_put_contents("$directory/$number.txt", json_encode($accountInfo));
+  $accountInfo[$_REQUEST['number']] = $newInfo;
+  file_put_contents('data/AccountInfo.txt', json_encode($accountInfo));
 }
-$scannedDirectory = array_diff(scandir($directory), array('..', '.'));
-print json_encode($scannedDirectory);
+print json_encode($accountInfo);
 ?>
