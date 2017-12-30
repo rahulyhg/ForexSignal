@@ -1,12 +1,14 @@
 <?php
 date_default_timezone_set('Asia/Ho_Chi_Minh');
+require_once('rest.inc.php');
+
 function isRunning()
 {
-  $isRunning = file_get_contents('data/isRunning.txt');
+  $isRunning = file_get_contents(__DIR__ . '/../data/isRunning.txt');
   if ($isRunning) {
     exit('Running');
   }
-  file_put_contents('data/isRunning.txt', true);
+  file_put_contents(__DIR__ . '/../data/isRunning.txt', true);
 }
 
 function getTop20Id()
@@ -23,12 +25,12 @@ function getTop20Id()
     $top20IdArray[] = $tmp;
   }
 
-  file_put_contents('data/0_Top20ID.txt', json_encode($top20IdArray));
+  file_put_contents(__DIR__ . '/../data/0_Top20ID.txt', json_encode($top20IdArray));
 }
 
 function getDataFromId()
 {
-  $top20ID = json_decode(file_get_contents('data/0_Top20ID.txt'), true);
+  $top20ID = json_decode(file_get_contents(__DIR__ . '/../data/0_Top20ID.txt'), true);
   $returnArray = [];
   foreach ($top20ID as $index => $id) {
     $url = 'https://www.zulutrade.com/zulutrade-client/traders/api/providers/' . $id['id'] . '/openTrades';
@@ -49,12 +51,12 @@ function getDataFromId()
     }
   }
 
-  file_put_contents('data/1_Top20Data.txt', json_encode($returnArray));
+  file_put_contents(__DIR__ . '/../data/1_Top20Data.txt', json_encode($returnArray));
 }
 
 function getCurrentPrice()
 {
-  $listCurrency = json_decode(file_get_contents('1ForgeListCurrency.txt'), true);
+  $listCurrency = json_decode(file_get_contents(__DIR__ . '/../common/1ForgeListCurrency.txt'), true);
   $listCurrency = implode(',', $listCurrency);
   $apiKey = [];
   $apiKey[] = 'oaKms1onINj6VoYXYGKYgAUdYYKDnhyA';
@@ -77,13 +79,13 @@ function getCurrentPrice()
     $returnArray[$d->symbol] = $tmp;
   }
 
-  file_put_contents('data/2_CurrentPrice.txt', json_encode($returnArray));
+  file_put_contents(__DIR__ . '/../data/2_CurrentPrice.txt', json_encode($returnArray));
 }
 
 function getFloatingPips()
 {
-  $top20Data = json_decode(file_get_contents('data/1_Top20Data.txt'), true);
-  $currentPriceArray = json_decode(file_get_contents('data/2_CurrentPrice.txt'), true);
+  $top20Data = json_decode(file_get_contents(__DIR__ . '/../data/1_Top20Data.txt'), true);
+  $currentPriceArray = json_decode(file_get_contents(__DIR__ . '/../data/2_CurrentPrice.txt'), true);
   $returnArray = [];
   foreach ($top20Data as $trader => $tradeArray) {
     foreach ($tradeArray as $i => $trade) {
@@ -102,12 +104,12 @@ function getFloatingPips()
     }
   }
 
-  file_put_contents('data/3_Top20FloatingPips.txt', json_encode($returnArray));
+  file_put_contents(__DIR__ . '/../data/3_Top20FloatingPips.txt', json_encode($returnArray));
 }
 
 function allIn1JSON()
 {
-  $top20FloatingPips = json_decode(file_get_contents('data/3_Top20FloatingPips.txt'), true);
+  $top20FloatingPips = json_decode(file_get_contents(__DIR__ . '/../data/3_Top20FloatingPips.txt'), true);
   $returnArray = [];
   $i = 0;
   foreach ($top20FloatingPips as $trader => $tradeArray) {
@@ -122,12 +124,12 @@ function allIn1JSON()
     }
   }
 
-  file_put_contents('data/4_AllIn1JSON.txt', json_encode($returnArray));
+  file_put_contents(__DIR__ . '/../data/4_AllIn1JSON.txt', json_encode($returnArray));
 }
 
 function formatDataByCurrency()
 {
-  $top20Data = json_decode(file_get_contents('data/1_Top20Data.txt'), true);
+  $top20Data = json_decode(file_get_contents(__DIR__ . '/../data/1_Top20Data.txt'), true);
   $returnArray = [];
   foreach ($top20Data as $trader => $tradeData) {
     foreach ($tradeData as $index => $data) {
@@ -139,13 +141,13 @@ function formatDataByCurrency()
       $returnArray[$currency][$data['tradeType']][] = $tmp;
     }
   }
-  file_put_contents('data/5_FormatDataByCurrency.txt', json_encode($returnArray));
+  file_put_contents(__DIR__ . '/../data/5_FormatDataByCurrency.txt', json_encode($returnArray));
 }
 
 function zipDataByCurrency()
 {
-  $formatDataByCurrency = json_decode(file_get_contents('data/5_FormatDataByCurrency.txt'), true);
-  $currentPrice = json_decode(file_get_contents('data/2_CurrentPrice.txt'), true);
+  $formatDataByCurrency = json_decode(file_get_contents(__DIR__ . '/../data/5_FormatDataByCurrency.txt'), true);
+  $currentPrice = json_decode(file_get_contents(__DIR__ . '/../data/2_CurrentPrice.txt'), true);
   $returnArray = [];
   foreach ($formatDataByCurrency as $currency => $dataObj) {
     foreach ($dataObj as $type => $data) {
@@ -173,12 +175,12 @@ function zipDataByCurrency()
     }
   }
 
-  file_put_contents('data/6_ZipDataByCurrency.txt', json_encode($returnArray));
+  file_put_contents(__DIR__ . '/../data/6_ZipDataByCurrency.txt', json_encode($returnArray));
 }
 
 function getTip()
 {
-  $zipDataByCurrency = json_decode(file_get_contents('data/6_ZipDataByCurrency.txt'), true);
+  $zipDataByCurrency = json_decode(file_get_contents(__DIR__ . '/../data/6_ZipDataByCurrency.txt'), true);
   $tmp = [];
   foreach ($zipDataByCurrency as $currency => $dataObj) {
     foreach ($dataObj as $type => $data) {
@@ -193,12 +195,12 @@ function getTip()
       }
     }
   }
-  file_put_contents('data/7_GetTip.txt', json_encode($tmp));
+  file_put_contents(__DIR__ . '/../data/7_GetTip.txt', json_encode($tmp));
 }
 
 function allIn1JSON2()
 {
-  $zipDataByCurrency = json_decode(file_get_contents('data/6_ZipDataByCurrency.txt'), true);
+  $zipDataByCurrency = json_decode(file_get_contents(__DIR__ . '/../data/6_ZipDataByCurrency.txt'), true);
   $returnArray = [];
   foreach ($zipDataByCurrency as $currency => $dataObj) {
     foreach ($dataObj as $type => $order) {
@@ -213,11 +215,11 @@ function allIn1JSON2()
     }
   }
 
-  file_put_contents('data/8_AllIn1JSON2.txt', json_encode($returnArray));
+  file_put_contents(__DIR__ . '/../data/8_AllIn1JSON2.txt', json_encode($returnArray));
 }
 
 function done()
 {
-  file_put_contents('data/isRunning.txt', false);
+  file_put_contents(__DIR__ . '/../data/isRunning.txt', false);
   exit('Done');
 }

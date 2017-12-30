@@ -1,57 +1,59 @@
 <?php
 session_start();
-if (!isset($_SESSION['isLogin']) || !$_SESSION['isLogin']) exit;
-if (isset($_GET['day'])) {
-  $_SESSION['day'] = $_GET['day'];
-  header("Location: index.php");
+if (isset($_REQUEST['day'])) {
+    $_SESSION['day'] = $_REQUEST['day'];
+    header("location: index.php");
+}
+if (!isset($_SESSION['day'])) {
+    $_SESSION['day'] = 2;
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <title id='Description'>Forex Signal Data</title>
-  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="js/jqwidgets/styles/jqx.base.css" type="text/css"/>
+  <link rel="shortcut icon" href="public/img/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="public/img/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="public/js/jqwidgets/styles/jqx.base.css" type="text/css"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
   <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1"/>
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet">
-  <link rel="manifest" href="/manifest.json" />
+  <link href="public/css/bootstrap.min.css" rel="stylesheet">
+  <link href="public/css/style.css" rel="stylesheet">
+  <link rel="manifest" href="/manifest.json"/>
   <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
   <script>
-      var OneSignal = window.OneSignal || [];
-      OneSignal.push(function() {
-          OneSignal.init({
-              appId: "23e68763-a5e1-411a-8e79-1d4d09ad8b98",
-              autoRegister: true,
-              notifyButton: {
-                  enable: false
-              },
-              persistNotification: false
-          });
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(function () {
+      OneSignal.init({
+        appId: "23e68763-a5e1-411a-8e79-1d4d09ad8b98",
+        autoRegister: true,
+        notifyButton: {
+          enable: false
+        },
+        persistNotification: false
       });
+    });
   </script>
-  <script type="text/javascript" src="js/scripts/jquery-1.11.1.min.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxcore.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxbuttons.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxscrollbar.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxmenu.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxgrid.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxgrid.sort.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxgrid.filter.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxdropdownlist.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxgrid.selection.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxgrid.columnsresize.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxgrid.columnsreorder.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxgrid.pager.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxdata.js"></script>
-  <script type="text/javascript" src="js/jqwidgets/jqxlistbox.js"></script>
-  <script type="text/javascript" src="js/scripts/demos.js"></script>
+  <script type="text/javascript" src="public/js/scripts/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxcore.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxbuttons.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxscrollbar.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxmenu.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxgrid.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxgrid.sort.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxgrid.filter.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxdropdownlist.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxgrid.selection.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxgrid.columnsresize.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxgrid.columnsreorder.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxgrid.pager.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxdata.js"></script>
+  <script type="text/javascript" src="public/js/jqwidgets/jqxlistbox.js"></script>
+  <script type="text/javascript" src="public/js/scripts/demos.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
       // Forex Signal
-      var url = "data/4_AllIn1JSON.txt";
+      var url = "private/data/4_AllIn1JSON.txt";
       var source =
         {
           datatype: "json",
@@ -157,15 +159,14 @@ if (isset($_GET['day'])) {
         $("#ForexSignalGrid").jqxGrid('updatebounddata', 'cells');
       }, 10000);
       var CallApi = setInterval(function () {
-        <?php
-        $day = (isset($_SESSION['day'])) ? $_SESSION['day'] : 2;
-        $url = "refreshJSON.php?day=$day";
-        ?>
+          <?php
+          $url = "private/api/refreshGridData.php?day={$_SESSION['day']}";
+          ?>
         $.ajax({url: "<?=$url?>"});
       }, 20000);
 
       // Forex Tip
-      var url2 = "data/8_AllIn1JSON2.txt";
+      var url2 = "private/data/8_AllIn1JSON2.txt";
       var source2 =
         {
           datatype: "json",
@@ -239,18 +240,17 @@ if (isset($_GET['day'])) {
       });
       $("#submit").off("click").on("click", function () {
         var data = $("form").serializeArray();
-        var url = "ForexSignal.php";
+        var url = "private/api/getForexSignal.php";
         $("[name=addSignal]").val('');
         $.ajax({
           method: 'POST',
           url: url,
           data: data,
           success: function (response) {
-            var result = "NO SIGNAL!!!";
             if (response) {
-              result = "Signal: " + response.replace(/,/g, '<br>');
+              var result = "Signal: " + response.replace(/,/g, ' - ');
+              $("#result").html(result);
             }
-            $("#result").html(result);
           },
           error: function (response) {
             $("#result").html("ERROR!!!");
@@ -279,16 +279,15 @@ if (isset($_GET['day'])) {
         }
       }, 5000);
       var UpdateForexSignal = setInterval(function () {
-        var url = "data/ForexSignal.txt";
+        var url = "private/data/forexSignal.txt";
         $.ajax({
           method: 'GET',
           url: url,
           success: function (response) {
-            var result = "NO SIGNAL!!!";
             if (response) {
-              result = "Signal: " + response.replace(/,/g, '<br>');
+              var result = "Signal: " + response.replace(/,/g, ' - ');
+              $("#result").html(result);
             }
-            $("#result").html(result);
           },
           error: function (response) {
             $("#result").html("ERROR!!!");
@@ -301,32 +300,46 @@ if (isset($_GET['day'])) {
 <body class='default'>
 <div style="max-width: 1475px">
   <div id="ForexTipGrid" style="margin: 20px; float: left;"></div>
-  <div id="addSignalForm" style="margin: 20px; float: left; max-width: 100px">
+  <div id="ForexSignalGrid" style="margin: 20px; float: left;"></div>
+  <div id="addSignalForm" style="margin: 20px; float: left;">
     <form>
-      <div class="form-group">
-        <label for="type">Type</label>
-        <input type="text" class="form-control" id="type" name="type" readonly>
-      </div>
-      <div class="form-group">
-        <label for="symbol">Symbol</label>
-        <input type="text" class="form-control" id="symbol" name="symbol" readonly>
-      </div>
-      <div class="form-group">
-        <label for="price">Price</label>
-        <input type="text" class="form-control" id="price" name="price" readonly>
-      </div>
-      <div class="form-group">
-        <label for="addSignal">Check</label>
-        <input type="password" class="form-control" id="addSignal" name="addSignal">
-      </div>
+      <table>
+        <tbody>
+        <td style="max-width: 80px; text-align: center; padding-right: 5px;">
+          <div class="form-group">
+            <label for="type">Type</label>
+            <input style="text-align: center;" type="text" class="form-control" id="type" name="type" readonly>
+          </div>
+        </td>
+        <td style="max-width: 120px; text-align: center; padding-right: 5px;">
+          <div class="form-group">
+            <label for="symbol">Symbol</label>
+            <input style="text-align: center;" type="text" class="form-control" id="symbol" name="symbol" readonly>
+          </div>
+        </td>
+        <td style="max-width: 100px; text-align: center; padding-right: 5px;">
+          <div class="form-group">
+            <label for="price">Price</label>
+            <input style="text-align: center;" type="text" class="form-control" id="price" name="price" readonly>
+          </div>
+        </td>
+        <td style="max-width: 80px; text-align: center; padding-right: 5px;">
+          <div class="form-group">
+            <label for="addSignal">Password</label>
+            <input style="text-align: center;" type="password" class="form-control" id="addSignal" name="addSignal">
+          </div>
+        </td>
+        <td style="max-width: 80px; text-align: center; padding-left: 15px; padding-top: 10px">
+          <button type="submit" class="btn btn-default" id="submit" onclick="return false;">No Action</button>
+        </td>
+        </tbody>
+      </table>
       <input type="hidden" name="isDelete" value="false">
-      <button type="submit" class="btn btn-default" id="submit" onclick="return false;">No Action</button>
       <p class="help-block" id="result"></p>
     </form>
   </div>
-  <div id="ForexSignalGrid" style="margin: 20px; float: left;"></div>
 </div>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/scripts.js"></script>
+<script src="public/js/bootstrap.min.js"></script>
+<script src="public/js/scripts.js"></script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 <?php
-require_once('rest.inc.php');
-require_once('func.inc.php');
+require_once __DIR__ . '/../common/func.inc.php';
 
 isRunning();
 getTop20Id();
