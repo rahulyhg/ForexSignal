@@ -106,7 +106,7 @@ if (!isset($_SESSION['day'])) {
       $("#ForexSignalGrid").jqxGrid(
         {
           width: 679,
-          height: 420,
+          height: 500,
           autoheight: false,
           source: dataAdapter,
           sortable: true,
@@ -115,7 +115,7 @@ if (!isset($_SESSION['day'])) {
           pageable: true,
           columnsreorder: true,
           showfilterrow: true,
-          pagesize: 10,
+          pagesize: 14,
           autorowheight: true,
           selectionmode: 'multiplerows',
           columns: [
@@ -199,7 +199,7 @@ if (!isset($_SESSION['day'])) {
       $("#ForexTipGrid").jqxGrid(
         {
           width: 500,
-          height: 420,
+          height: 360,
           autoheight: false,
           source: dataAdapter2,
           sortable: true,
@@ -208,7 +208,7 @@ if (!isset($_SESSION['day'])) {
           pageable: true,
           columnsreorder: true,
           showfilterrow: true,
-          pagesize: 10,
+          pagesize: 9,
           autorowheight: true,
           selectionmode: 'singlerow',
           columns: [
@@ -310,8 +310,8 @@ if (!isset($_SESSION['day'])) {
 </head>
 <body class='default'>
 <div style="max-width: 1475px">
-  <div id="ForexTipGrid" style="margin: 20px; float: left;"></div>
   <div id="ForexSignalGrid" style="margin: 20px; float: left;"></div>
+  <div id="ForexTipGrid" style="margin: 20px; float: left;"></div>
   <div id="addSignalForm" style="margin: 20px; float: left;">
     <form>
       <table>
