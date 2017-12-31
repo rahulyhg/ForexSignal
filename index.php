@@ -59,7 +59,7 @@ if (!isset($_SESSION['day'])) {
           datatype: "json",
           datafields: [
             {name: 'currency', type: 'string'},
-            {name: 'dateTime', type: 'datetime'},
+            {name: 'dateTime', type: 'string'},
             {name: 'stdLotds', type: 'string'},
             {name: 'tradeType', type: 'string'},
             {name: 'entryRate', type: 'string'},
@@ -98,10 +98,14 @@ if (!isset($_SESSION['day'])) {
         }
         return '<div style="text-align: center; margin-top: 5px;">' + value + '</div>';
       }
+      var dateRenderer = function (row, datafield, value) {
+        var retVal = value.slice(0, 10);
+        return '<div style="text-align: center; margin-top: 5px;">' + retVal + '</div>';
+      }
       var dataAdapter = new $.jqx.dataAdapter(source);
       $("#ForexSignalGrid").jqxGrid(
         {
-          width: 750,
+          width: 679,
           height: 420,
           autoheight: false,
           source: dataAdapter,
@@ -136,7 +140,14 @@ if (!isset($_SESSION['day'])) {
               width: 50
             },
             {text: 'Lot', datafield: 'stdLotds', cellsalign: 'center', align: 'center', width: 50},
-            {text: 'Date Open', datafield: 'dateTime', cellsalign: 'center', align: 'center', width: 200},
+            {
+              text: 'Date Open',
+              datafield: 'dateTime',
+              cellsrenderer: dateRenderer,
+              cellsalign: 'center',
+              align: 'center',
+              width: 120
+            },
             {text: 'Open', datafield: 'entryRate', cellsalign: 'center', align: 'center', width: 100},
             {text: 'Current', datafield: 'currentPrice', cellsalign: 'center', align: 'center', width: 100},
             {
