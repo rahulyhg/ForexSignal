@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (isset($_SESSION["login"]) && $_SESSION["login"]) {
+} else {
+  header("location: login.php");
+}
 if (isset($_REQUEST['day'])) {
   $_SESSION['day'] = $_REQUEST['day'];
   header("location: index.php");
