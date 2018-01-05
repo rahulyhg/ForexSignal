@@ -43,7 +43,8 @@ function getDataFromId()
       if (!$data->performanceValid) continue;
       @$tmp['currency'] = str_replace('/', '', $data->currencyName);
       @$tmp['dateTime'] = date('Y-m-d H:i:s', ($data->dateTime / 1000));
-      @$tmp['stdLotds'] = $data->stdLotds;
+      @$tmp['stdLotds'] = 1;
+//      @$tmp['stdLotds'] = $data->stdLotds;
       @$tmp['tradeType'] = $data->tradeType;
       @$tmp['entryRate'] = $data->entryRate;
       @$tmp['pipMultiplier'] = $data->pipMultiplier;
