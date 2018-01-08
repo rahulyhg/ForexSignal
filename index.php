@@ -484,7 +484,7 @@ if (!isset($_SESSION['day'])) {
       <h4 id="result"></h4>
     </form>
   </div>
-  <div class="row" style="max-width: 1290px; padding: 20px">
+  <div class="row" style="width: 1290px; padding: 20px">
     <div class="col-md-12">
       <div class="panel-group" id="panel-909698">
         <div class="panel panel-default">
