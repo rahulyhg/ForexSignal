@@ -11,7 +11,7 @@ if (isset($_REQUEST['day'])) {
 if (!isset($_SESSION['day'])) {
   $_SESSION['day'] = 2;
 }
-file_put_contents(__DIR__ . '/../private/data/isRunning.txt', false);
+file_put_contents(__DIR__ . '/private/data/isRunning.txt', false);
 ?>
 <!DOCTYPE html>
 <html lang="en">
