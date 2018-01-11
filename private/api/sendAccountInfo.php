@@ -11,5 +11,6 @@ if (isset($_REQUEST['number'])) {
   $accountInfo[$_REQUEST['number']] = $newInfo;
   file_put_contents(__DIR__ . '/../data/AccountInfo.txt', json_encode($accountInfo));
 }
+header("Refresh: 5; url=sendAccountInfo.php");
 print json_encode($accountInfo);
 ?>
