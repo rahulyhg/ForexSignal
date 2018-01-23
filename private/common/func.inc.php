@@ -60,18 +60,19 @@ function getCurrentPrice()
   $listCurrency = json_decode(file_get_contents(__DIR__ . '/../common/1ForgeListCurrency.txt'), true);
   $listCurrency = implode(',', $listCurrency);
   $apiKey = [];
-  $apiKey[] = 'oaKms1onINj6VoYXYGKYgAUdYYKDnhyA';
   $apiKey[] = 'Jf3MVdUSbaHCVy1Tn9EFMAUdkosZhbJj';
-  $apiKey[] = 'ClrMRVp0f9n1tqDHyvhxYerwU1U248UZ';
-  $apiKey[] = 'aGacuvy68EAezgTPio45GGdn0b0e0sit';
-  $apiKey[] = '1lJcTFrdrR7IWW4YWsWUovGq1gtE72Jl';
-  $apiKey[] = 'a5iuTDnIXCyM9VSmKsRJfofOC1Hnlo0S';
-  $apiKey[] = 'tbjwLNRUXWWTtplPqXgiNNdElXPRr15Y';
-  $apiKey[] = 'eBnQGyYnBlSgCZXqUx52EANWfbOnrrbz';
-  $apiKey[] = 'OIXsKdMvzL4E38v101txYz9GBbKqZQ25';
-  $apiKey[] = 'pyJlh4mq3p6SwG2Oo7EAcgVEb9muLU8s';
-  $index = rand(0, 9);
-  $priceObj = RestCurl::get('https://forex.1forge.com/1.0.2/quotes?pairs=' . $listCurrency . '&api_key=' . $apiKey[$index]);
+//  $apiKey[] = 'oaKms1onINj6VoYXYGKYgAUdYYKDnhyA';
+//  $apiKey[] = 'ClrMRVp0f9n1tqDHyvhxYerwU1U248UZ';
+//  $apiKey[] = 'aGacuvy68EAezgTPio45GGdn0b0e0sit';
+//  $apiKey[] = '1lJcTFrdrR7IWW4YWsWUovGq1gtE72Jl';
+//  $apiKey[] = 'a5iuTDnIXCyM9VSmKsRJfofOC1Hnlo0S';
+//  $apiKey[] = 'tbjwLNRUXWWTtplPqXgiNNdElXPRr15Y';
+//  $apiKey[] = 'eBnQGyYnBlSgCZXqUx52EANWfbOnrrbz';
+//  $apiKey[] = 'OIXsKdMvzL4E38v101txYz9GBbKqZQ25';
+//  $apiKey[] = 'pyJlh4mq3p6SwG2Oo7EAcgVEb9muLU8s';
+//  $index = rand(0, 9);
+  $index = 0;
+  $priceObj = RestCurl::get('https://forex.1forge.com/1.0.3/quotes?pairs=' . $listCurrency . '&api_key=' . $apiKey[$index]);
   $returnArray = [];
   foreach ($priceObj['data'] as $d) {
     $tmp['price'] = $d->price;
@@ -91,6 +92,7 @@ function getFloatingPips()
   foreach ($top20Data as $trader => $tradeArray) {
     foreach ($tradeArray as $i => $trade) {
       $currentPrice = $currentPriceArray[$trade['currency']]['price'];
+      $floatingPips = 0;
       if ($trade['tradeType'] == 'BUY') {
         $floatingPips = $currentPrice - $trade['entryRate'];
       } elseif ($trade['tradeType'] == 'SELL') {
