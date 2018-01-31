@@ -18,9 +18,29 @@ foreach ($html->find('div.whtico-row') as $element) {
 }
 ksort($result);
 ksort($closed);
-$result = array_merge($result, $closed);
 print "<table>";
 foreach ($result as $ico) {
+  print "<tr>";
+  print "<td>";
+  print $ico['name'];
+  print "</td>";
+  print "<td>";
+  print $ico['type'];
+  print "</td>";
+  print "<td>";
+  print $ico['require'];
+  print "</td>";
+  print "<td>";
+  print $ico['status'];
+  print "</td>";
+  print "<td>";
+  print $ico['link'];
+  print "</td>";
+  print "</tr>";
+}
+print "</table>";
+print "<table>";
+foreach ($closed as $ico) {
   print "<tr>";
   print "<td>";
   print $ico['name'];
