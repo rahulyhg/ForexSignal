@@ -26,7 +26,7 @@ foreach ($html->find('tbody tr') as $element) {
   @$tmp['member'] = $element->find("td", 2)->plaintext;
   @$tmp['growth'] = $element->find("td", 3)->plaintext;
   @$tmp['link'] = $element->find("td a", 0)->href;
-  $telegramMember[] = $tmp;
+  if ($tmp['link']) $telegramMember[] = $tmp;
 }
 print "<table>";
 foreach ($currentWhitelist as $ico) {
