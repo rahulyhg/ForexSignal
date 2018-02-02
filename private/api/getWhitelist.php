@@ -70,7 +70,6 @@ foreach ($closedWhitelist as $ico) {
   print "</tr>";
 }
 print "</table>";
-print "</table>";
 print "<table>";
 foreach ($telegramMember as $ico) {
   print "<tr>";
