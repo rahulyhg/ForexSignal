@@ -22,7 +22,8 @@ $html = file_get_html('http://icowhitelists.com/files/telegram-tracker.html');
 $tmp = [];
 $telegramMember = [];
 foreach ($html->find('tbody tr') as $element) {
-  @$tmp['name'] = $element->find("td", 0)->plaintext;
+  @$tmp['name'] = $element->find("td", 1)->plaintext;
+  @$tmp['token'] = $element->find("td", 0)->plaintext;
   @$tmp['member'] = $element->find("td", 2)->plaintext;
   @$tmp['growth'] = $element->find("td", 3)->plaintext;
   @$tmp['link'] = $element->find("td a", 0)->href;
@@ -75,6 +76,9 @@ foreach ($telegramMember as $ico) {
   print "<tr>";
   print "<td>";
   print $ico['name'];
+  print "</td>";
+  print "<td>";
+  print $ico['token'];
   print "</td>";
   print "<td>";
   print $ico['member'];
