@@ -18,6 +18,7 @@ foreach ($html->find('div.whtico-row') as $element) {
 }
 ksort($currentWhitelist);
 ksort($closedWhitelist);
+
 $html = file_get_html('http://icowhitelists.com/files/telegram-tracker.html');
 $tmp = [];
 $telegramMember = [];
@@ -30,8 +31,11 @@ foreach ($html->find('tbody tr') as $element) {
   if ($tmp['link']) $telegramMember[] = $tmp;
 }
 print "<table>";
-foreach ($currentWhitelist as $ico) {
+foreach ($currentWhitelist as $index => $ico) {
   print "<tr>";
+  print "<td>";
+  print $index + 1;
+  print "</td>";
   print "<td>";
   print $ico['name'];
   print "</td>";
@@ -51,8 +55,11 @@ foreach ($currentWhitelist as $ico) {
 }
 print "</table>";
 print "<table>";
-foreach ($closedWhitelist as $ico) {
+foreach ($closedWhitelist as $index => $ico) {
   print "<tr>";
+  print "<td>";
+  print $index + 1;
+  print "</td>";
   print "<td>";
   print $ico['name'];
   print "</td>";
@@ -72,8 +79,11 @@ foreach ($closedWhitelist as $ico) {
 }
 print "</table>";
 print "<table>";
-foreach ($telegramMember as $ico) {
+foreach ($telegramMember as $index => $ico) {
   print "<tr>";
+  print "<td>";
+  print $index + 1;
+  print "</td>";
   print "<td>";
   print $ico['name'];
   print "</td>";
