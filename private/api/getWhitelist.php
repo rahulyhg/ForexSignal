@@ -31,10 +31,11 @@ foreach ($html->find('tbody tr') as $element) {
   if ($tmp['link']) $telegramMember[] = $tmp;
 }
 print "<table>";
-foreach ($currentWhitelist as $index => $ico) {
+$i = 1;
+foreach ($currentWhitelist as $ico) {
   print "<tr>";
   print "<td>";
-  print $index + 1;
+  print $i++;
   print "</td>";
   print "<td>";
   print $ico['name'];
@@ -54,11 +55,12 @@ foreach ($currentWhitelist as $index => $ico) {
   print "</tr>";
 }
 print "</table>";
+$i = 1;
 print "<table>";
-foreach ($closedWhitelist as $index => $ico) {
+foreach ($closedWhitelist as $ico) {
   print "<tr>";
   print "<td>";
-  print $index + 1;
+  print $i++;
   print "</td>";
   print "<td>";
   print $ico['name'];
@@ -78,11 +80,12 @@ foreach ($closedWhitelist as $index => $ico) {
   print "</tr>";
 }
 print "</table>";
+$i = 1;
 print "<table>";
-foreach ($telegramMember as $index => $ico) {
+foreach ($telegramMember as $ico) {
   print "<tr>";
   print "<td>";
-  print $index + 1;
+  print $i++;
   print "</td>";
   print "<td>";
   print $ico['name'];
